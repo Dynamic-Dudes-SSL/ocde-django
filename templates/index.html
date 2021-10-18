@@ -22,8 +22,15 @@
                 <h1>Welcome Friend, please log in</h1>
                 {% endif %}
           </div>
+          {% if user.is_authenticated %}
+          <a href="/accounts/logout">Logout</a>
+          {% else %}
+          <a href="/accounts/signup">sign up</a>
+          <a href="/accounts/login">sign in</a>
+          {% endif %}
         </div>
       </div>
+      
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
