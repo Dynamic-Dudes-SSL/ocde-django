@@ -18,6 +18,23 @@
                 <h1>My Google Login Project</h1>
                 {% if user.is_authenticated %}
                 <p>Welcome, {{ user.username }} !</p>
+                <!-- <h1>{{cppcode}}</h1>
+                <h1>{{cppoutput}}</h1>
+                 <form method="post" action=" ">
+                   {% csrf_token %}
+                   <textarea name="cpp" rows="25" cols="100"></textarea><br>
+                   <input type="submit">
+                 </form> -->
+                   <h1>{{pycode}}</h1>
+                 <h1>{{pyoutput}}</h1>
+                <form method="post" action=" ">
+                   {% csrf_token %}
+                   <textarea name="py" rows="25" cols="100"></textarea><br>
+                   <input type="submit">
+                </form>
+
+
+
                 {% else %}
                 <h1>Welcome Friend, please log in</h1>
                 {% endif %}
