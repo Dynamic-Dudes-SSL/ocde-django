@@ -33,7 +33,7 @@ def index(request):
             f2.write(pycode)
             f2.close()
             cmd = "pyt.py"
-            p3=subprocess.run(["python", cmd], stdout=PIPE, stderr=PIPE)
+            p3=subprocess.run(["python3", cmd], stdout=PIPE, stderr=PIPE)
             if p3.returncode==0:
                 pyoutput=p3.stdout.decode()
             else:
