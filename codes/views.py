@@ -52,7 +52,7 @@ class CodeUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 class CodeDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Code
-    success_url = '/'
+    success_url = '/code'
 
     def test_func(self):
         code = self.get_object()
