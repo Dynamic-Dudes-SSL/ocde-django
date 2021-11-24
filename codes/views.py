@@ -28,7 +28,7 @@ class CodeDetailView(DetailView):
 
 class CodeCreateView(LoginRequiredMixin, CreateView):
     model = Code
-    fields = ['title', 'content']
+    fields = ['lang', 'title', 'content']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -37,7 +37,7 @@ class CodeCreateView(LoginRequiredMixin, CreateView):
 
 class CodeUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Code
-    fields = ['title', 'content']
+    fields = ['lang', 'title', 'content']
 
     def form_valid(self, form):
         form.instance.author = self.request.user

@@ -1,8 +1,14 @@
+{% extends "codes/base.html" %}
+{% load socialaccount %}
+    {% block content %}
+    <h1>OCD-E </h1>
+    {% if user.is_authenticated %}
+      <p>Welcome, You are logged in as {{ user.username }}</p>
+      <a href="{% url 'logout' %}"><button>Logout</button></a>
+    {% else %}
+      <a href="{% provider_login_url 'google' %}"><button>Login with Google</button></a>
+    {% endif %}
 
-{% extends 'index.html' %}
 
-{% block title %}Login{% endblock %}
-
-{% block content %}
-<h2>Login page</h2>
-{% endblock %}
+    <h2>Login page</h2>
+    {% endblock %}
