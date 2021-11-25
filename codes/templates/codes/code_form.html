@@ -11,7 +11,13 @@
             </fieldset>
             <div class="form-group">
                 <button class="btn btn-outline-info" type="submit">Save</button>
+                <button class="btn btn-outline-info" type="submit">Run</button>
             </div>
         </form>
     </div>
+    <form method="post" action=" ">
+        {% csrf_token %}
+        <textarea name="py" rows="25" cols="100"></textarea><br>
+        <input type="submit">
+     </form>
 {% endblock content %}
