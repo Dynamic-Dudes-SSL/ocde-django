@@ -8,12 +8,70 @@ from django.views.generic import (
     DeleteView
 )
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from subprocess import PIPE
+import subprocess
+import os
 
 def home(request):
     context = {
         'codes': Code.objects.all()
     }
     return render(request, 'codes/home.html', context)
+
+def get_output(code_written):
+    code = code_written.content 
+    lang = code_written.lang
+    title = code_written.title
+    output=""
+
+    if lang == "PYTHON":
+        if len(code)>0:
+            f2 = open("pyt.py", "w")
+            f2.write(code)
+            f2.close()
+            cmd = "pyt.py"
+            p2=subprocess.run(["python3", cmd], stdout=PIPE, stderr=PIPE)
+            if p2.returncode==0:
+                output=p2.stdout.decode()
+            else:
+                output="error"
+                os.remove("pyt.py")
+
+    elif lang == 'C++':
+        if len(code)>0:
+            f1 = open("cpy.cpp", "w")
+            f1.write(code)
+            f1.close()
+            cmd = "cpy.cpp"
+            p1=subprocess.run(["g++", cmd])
+            if p1.returncode==0:
+                p1=subprocess.run("./a.out", stdout=PIPE, stderr=PIPE)
+                if p1.returncode==0:
+                    output=p1.stdout.decode()
+                else:
+                    output="runtime error"
+            else:
+                output="compilation error"
+            os.remove("cpy.cpp")
+    """
+    elif lang == 'JAVA':
+        if len(code)>0:
+            cmd = title+'.java'
+            f3 = open(cmd, "w")
+            f3.write(code)
+            f3.close()
+            p3=subprocess.run(["javac", cmd])
+            if p3.returncode==0:
+                p3=subprocess.run("java "+title, stdout=PIPE, stderr=PIPE)
+                if p3.returncode==0:
+                    output=p3.stdout.decode()
+                else:
+                    output="runtime error"
+            else:
+                output="compilation error"
+            os.remove(cmd)
+    """
+    return output
 
 class CodeListView(ListView):
     model = Code
@@ -25,6 +83,11 @@ class CodeListView(ListView):
 class CodeDetailView(DetailView):
     model = Code
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['output'] = get_output(self.get_object())
+        return context
+
 
 class CodeCreateView(LoginRequiredMixin, CreateView):
     model = Code
@@ -32,42 +95,6 @@ class CodeCreateView(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         form.instance.author = self.request.user
-        return super().form_valid(form)
-
-    def output(self,form):
-        code = self.get_object()
-        pycode=" "
-        pyoutput=""
-        pycode=code.content
-        if len(pycode)>0:
-            f2 = open("pyt.py", "w")
-            f2.write(pycode)
-            f2.close()
-            cmd = "pyt.py"
-            p3=subprocess.run(["python", cmd], stdout=PIPE, stderr=PIPE)
-            if p3.returncode==0:
-                pyoutput=p3.stdout.decode()
-            else:
-                pyoutput="error"
-            os.remove("pyt.py")
-        form.instance.output = pyoutput
-
-        cppcode="get lost"
-        cppoutput="no output"
-            # cppcode=request.POST['cpp','']
-            # if len(cppcode)>0:
-            #     f = open("cpy.cpp", "w")
-            #     f.write(cppcode)
-            #     f.close()
-            #     cmd = "cpy.cpp"
-            #     p2=subprocess.run(["g++", cmd])
-            #     if p2.returncode==0:
-            #         p1=subprocess.run("./a.out", stdout=PIPE, stderr=PIPE)
-            #         if p1.returncode==0:
-            #             cppoutput=p1.stdout.decode()
-            #         else:
-            #             cppoutput="runti
-
         return super().form_valid(form)
 
 
