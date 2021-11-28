@@ -18,12 +18,20 @@ def home(request):
     }
     return render(request, 'codes/home.html', context)
 
+def class_name(content):
+    words2 = content.split('{')
+    words = words2[0].split(" ")
+    name = words[-1]
+    if name[-1]=='{':
+        name = name[0:-2]
+    return name
+
 def get_output(code_written):
     code = code_written.content 
     lang = code_written.lang
     title = code_written.title
-    output=""
-
+    output="abc"
+    cmd2=""
     if lang == "PYTHON":
         if len(code)>0:
             f2 = open("pyt.py", "w")
@@ -53,16 +61,18 @@ def get_output(code_written):
             else:
                 output="compilation error"
             os.remove("cpy.cpp")
-    """
+            os.remove("./a.out")
+
     elif lang == 'JAVA':
         if len(code)>0:
-            cmd = title+'.java'
+            cmd2=class_name(code)
+            cmd =cmd2+ ".java"
             f3 = open(cmd, "w")
             f3.write(code)
             f3.close()
             p3=subprocess.run(["javac", cmd])
             if p3.returncode==0:
-                p3=subprocess.run("java "+title, stdout=PIPE, stderr=PIPE)
+                p3=subprocess.run(["java",cmd2], stdout=PIPE, stderr=PIPE)
                 if p3.returncode==0:
                     output=p3.stdout.decode()
                 else:
@@ -70,8 +80,27 @@ def get_output(code_written):
             else:
                 output="compilation error"
             os.remove(cmd)
-    """
+            #os.remove(cmd2+".class")
+            
     return output
+
+def submissions(user):
+    codes = Code.objects.all()
+    subm = 0
+    for code in codes:
+        if code.author==user:
+            subm += 1
+    return subm
+
+def sumbit(user, mycode):
+    codes = Code.objects.all()
+    subm = 0
+    for code in codes:
+        if code.author==user:
+            subm += 1
+            if(code==mycode):
+                return subm
+    return subm
 
 class CodeListView(ListView):
     model = Code
@@ -88,7 +117,6 @@ class CodeDetailView(DetailView):
         context['output'] = get_output(self.get_object())
         return context
 
-
 class CodeCreateView(LoginRequiredMixin, CreateView):
     model = Code
     fields = ['lang', 'title', 'content']
@@ -97,6 +125,10 @@ class CodeCreateView(LoginRequiredMixin, CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['submissions'] = submissions(self.request.user)+1
+        return context
 
 class CodeUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Code
@@ -111,6 +143,11 @@ class CodeUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         if self.request.user == code.author:
             return True
         return False
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['submissions'] = sumbit(self.request.user,self.get_object())
+        return context
 
 
 class CodeDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):

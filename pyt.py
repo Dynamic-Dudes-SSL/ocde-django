@@ -1,3 +1,1 @@
-a=10
-b=6
-print(a-b)
+print(2+3)

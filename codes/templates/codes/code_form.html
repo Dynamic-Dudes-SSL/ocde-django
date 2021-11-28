@@ -1,7 +1,12 @@
 {% extends "codes/base.html" %}
 {% load i18n %}
 {% load account socialaccount %}
+
+
 {% block content %}
+
+    
+    
     <div class="content-section">
         <form method="POST">
             {% csrf_token %}
@@ -15,3 +20,7 @@
         </form>
     </div>
 {% endblock content %}
+
+<script>
+    document.body.style.backgroundImage="url(back1.jpg)";
+</script>

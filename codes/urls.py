@@ -14,4 +14,5 @@ urlpatterns = [
     path('codes/new/', CodeCreateView.as_view(), name='code-create'),
     path('codes/<int:pk>/update/', CodeUpdateView.as_view(), name='code-update'),
     path('codes/<int:pk>/delete/', CodeDeleteView.as_view(), name='code-delete'),
+    
 ]

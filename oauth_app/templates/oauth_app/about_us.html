@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link type="text/css" href="about_us.css">
+    <style>
+        :root{
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,  
+            Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;  
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,  
+            Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;  
+            background-image: url("../oauth_app/back1.jpg");  
+            background-attachment: fixed;  
+            background-position: center;  
+            background-repeat: no-repeat;  
+            background-size: cover;  
+            margin: 0;
+        }
+  
+        html {
+            box-sizing: border-box;
+        }
+  
+        *, *:before, *:after {
+            box-sizing: inherit;
+        }
+  
+        .column {
+            float: left;
+            width: 33.3%;
+            margin-bottom: 16px;
+            padding: 0 8px;
+        }
+  
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            margin: 8px;
+        }
+  
+        .about-section {
+            padding: 50px;
+            text-align: center;
+            background-color: #474e5d;
+            background-image: url("back1.jpg");
+            color: white;
+        }
+  
+        .container {
+            padding: 0 16px;
+        }
+  
+        .container::after, .row::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+  
+        .title {
+            color: grey;
+        }
+  
+        .button {
+        background-color: #24e90a;  
+        background-image: linear-gradient(90deg, #24e90a 0%, var(--lightblue) 74%);  
+        border-radius: 20px;  
+        border: 1px solid #24e90a;  
+        color: var(--white);  
+        cursor: pointer;  
+        font-size: 0.8rem;  
+        font-weight: bold;  
+        letter-spacing: 0.1rem;  
+        padding: 0.9rem 4rem;  
+        text-transform: uppercase;  
+        transition: transform 80ms ease-in;
+        }
+  
+        .button:hover {
+            background-color: #555;
+        }
+  
+        @media screen and (max-width: 650px) {
+            .column {
+                width: 100%;
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+
+
+<div class="about-section">
+    <h1>Dynamic Dudes</h1>
+    <p>This Website Has been Designed for the CS251 Project OCD-E.</p>
+    
+  </div>
+  
+  <h2 style="text-align:center">Our Team</h2>
+  <div class="row">
+    <div class="column">
+      <div class="card">
+        <img src="" alt="Dhananjay" style="width:100%">
+        <div class="container">
+          <h2>Dhananjay Kejriwal</h2>
+          <p class="title">Dude Alpha</p>
+          <p>Implemented the bonus features like Environment Isolation and Offline Compilation</p>
+          <p>dhananjaykejriwal@iitb.ac.in</p>
+          <p><button class="button">Contact</button></p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="column">
+      <div class="card">
+        <img src="" alt="Margav" style="width:100%">
+        <div class="container">
+          <h2>Margav Savsani</h2>
+          <p class="title">Dude Beta</p>
+          <p>Implemented the authorization part and login with google part of this website</p>
+          <p>200050072@iitb.ac.in</p>
+          <p><button class="button">Contact</button></p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="column">
+      <div class="card">
+        <img src="" alt="Sartaj" style="width:100%">
+        <div class="container">
+          <h2>Sartaj Islam</h2>
+          <p class="title">Dude Gamma</p>
+          <p>Implemented the online compilation part of this website.</p>
+          <p>200050108@iitb.ac.in</p>
+          <p><button class="button">Contact</button></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="column">
+        <div class="card">
+          <img src="" alt="Harsha" style="width:100%">
+          <div class="container">
+            <h2>Sri Harsha Ganji</h2>
+            <p class="title">Dude Delta</p>
+            <p>Implemented the front-end part of the website using html and css</p>
+            <p>200050041@iitb.ac.in</p>
+            <p><button class="button">Contact</button></p>
+          </div>
+        </div>
+      </div>
+  </div> 
+</body>
+</html>  

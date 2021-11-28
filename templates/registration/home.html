@@ -21,15 +21,16 @@
 
       p{
         color: rgb(235, 235, 245) ;
+        font-family: "Lucida Console", "Courier New", monospace;
       }
 </style>
     {% block content %}
     {% block css %}
-    <link rel="stylesheet1" type="text/css" href="{% static 'codes/home.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'codes/home.css' %}">
     {% endblock %}
     <h1 >OCD-E </h1>
     {% if user.is_authenticated %}
-      <p style="color: white">Welcome, You are logged in as {{ user.username }}</p>
+      <p style="color: white;">Welcome, You are logged in as {{ user.username }}</p>
       <a href="{% url 'logout' %}"><button class="btn">Logout</button></a>
     {% else %}
       <a href="{% provider_login_url 'google' %}"><button class="btn">Login with Google</button></a>
@@ -38,3 +39,8 @@
 
     <h2></h2>
     {% endblock %}
+
+
+    <script>
+      document.body.style.backgroundImage="url(back1.jpg)";
+    </script>

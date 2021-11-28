@@ -1,6 +1,7 @@
 {% extends "codes/base.html" %}
 {% block content %}
     {% for code in codes %}
+      {% if code.author == user %}
         <article class="media content-section">
           <div class="media-body">
             <div class="article-metadata">
@@ -11,6 +12,7 @@
             <h2><a class="article-title" href="{% url 'code-detail' code.id %}">{{ code.title }}</a></h2>
           </div>
         </article>
+      {% endif %}
     {% endfor %}
     {% if is_paginated %}
 
@@ -34,3 +36,7 @@
 
     {% endif %}
 {% endblock content %}
+
+<script>
+  document.body.style.backgroundImage="back.jpg";
+</script>
