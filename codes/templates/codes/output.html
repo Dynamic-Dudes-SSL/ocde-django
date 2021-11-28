@@ -45,8 +45,8 @@
 /* Control the left side */
 .left {
   left: 0;
-  background-color: #111;
-  background-image: url("back4.jpeg");
+  background-color: #0367a6;
+  /* background-image: url("back4.jpeg"); */
 }
 
 .left:hover{
@@ -56,8 +56,8 @@
 /* Control the right side */
 .right {
   right: 0;
-  background-color: green;
-  background-image: url("back3.jpeg");
+  background-color: #0367a6;
+  /* background-image: url("back3.jpeg"); */
 }
 
 /* If you want the content centered horizontally and vertically */
@@ -105,15 +105,12 @@
   <div class="split left">
     <div class="centered">
         <div class="card">
-            <div class="container">
-                <h4 style="color:tomato;"><b>Title : </b></h4>
-                <h4>{{global_title}}</h4>
-                <h4 style="color:tomato;"><b>Input : </b></h4>
-                <h4>{{global_user_input}}</h4>
-                <h4 style="color:tomato;"><b>Code : </b></h4>
-                <h4>{{global_content}}</h4>
-                <h4 style="color:tomato;"><b>Language : </b></h4>
-                <h4>{{global_lang}}</h4>
+            <div class="container" style="text-align: left;">
+                <h3><b style="color:red;">Language : </b>{{global_lang}}</h3>
+                <h3><b style="color: red;">Title : </b>{{global_title}}<h3>
+                <br>
+                <h2 style="color:tomato;"><b>Code : </b></h2>
+                <h3><pre>{{global_content}}</pre></h3>
             </div>
             
         </div>
@@ -126,11 +123,17 @@
   <div class="split right">
     <div class="centered">
         <div class="card">
-            <div class="container">
+            <div class="container" style="text-align: left;">
+                {% if global_user_input != "" %}
+                <h2 style="color:tomato;"><b>Input : </b></h2>
+                <h3><pre>{{global_user_input}}</pre></h3>
+                {% endif %}
+                <br>
                 <h1>Output : </h1>
                 {% for output in print_output %}
-                <h2>{{output}}</h2>
+                <h2><pre>{{output}}</pre></h2>
                 {% endfor %}
+                <br>
                 <a href="javascript:history.back()" class="button">Back</a>
             </div>
             

@@ -11,7 +11,7 @@ LANGUAGES = (
 )
 
 class Code(models.Model):
-    title = models.CharField(max_length=100,default='#CODE')
+    title = models.CharField(max_length=100,default='Title')
     lang = models.CharField(max_length=6, choices=LANGUAGES, default='C++')
     content = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)

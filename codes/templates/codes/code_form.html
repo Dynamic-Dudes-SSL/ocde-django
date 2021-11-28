@@ -6,20 +6,34 @@
 {% block content %}
 
     
-    
-    <div class="content-section">
-        <form method="POST">
-            {% csrf_token %}
-            <fieldset class="form-group">
-                <legend class="border-bottom mb-4">My Code</legend>
-                {{ form.as_p }}
-            </fieldset>
+    {% if submissions >= 11 %}
+        <h4>Sorry you cannot have more than 10 codes :(</h4>
+    {% else %}
+        <div class="content-section">
+            <form method="POST">
+                {% csrf_token %}
+                <fieldset class="form-group">
+                    <legend class="border-bottom mb-4">Saved Code - {{ submissions }}</legend>
+                    <div class="row">
+                        <div class="column">&nbsp&nbsp&nbsp&nbsp&nbspLanguage</div>
+                        <div class="column">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspTitle (class name for java code)</div>
+                    </div>
+                    <div class="row" style="width: 85%;">
+                        <div class="column" style="width: 20%;">&nbsp&nbsp&nbsp&nbsp&nbsp{{form.lang}}</div>
+                        <div class="column" >{{form.title}}</div>
+                    </div>
+                      <br>
+                    Code <br>{{form.content}}
+                         
+                </fieldset>
             <div class="form-group">
                 <button class="btn btn-outline-info" type="submit">Save</button>
             </div>
         </form>
     </div>
+    {% endif %}
 {% endblock content %}
+
 
 <script>
     document.body.style.backgroundImage="url(back1.jpg)";

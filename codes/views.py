@@ -157,9 +157,14 @@ class CodeDetailView(DetailView):
         global global_lang
         global global_content
         context = super().get_context_data(**kwargs)
-        global_title=self.get_object().title
-        global_lang=self.get_object().lang
-        global_content=self.get_object().content
+        # print(global_content  )
+        # content = self.get_object().content.replace("\n","<br>")
+        # content = content.split("<br>")
+        # print(content)
+        context['content'] = self.get_object().content
+        global_title = self.get_object().title
+        global_lang = self.get_object().lang
+        global_content = self.get_object().content
         #context['output'] = get_output(self.get_object())
         return context
 

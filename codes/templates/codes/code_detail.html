@@ -3,23 +3,34 @@
   <article class="media content-section">
     <div class="media-body">
       <div class="article-metadata">
-        <a class="mr-2" href="#">{{ object.author }}</a>
+        <a class="mr-2" href="/code/">{{ object.author }}</a>
         <small class="text-muted">{{ object.date_posted|date:"F d, Y" }}</small>
         <small class="text-muted">{{ code.lang }}</small>
-        {% if object.author == user %}
-          <div>
-            <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'code-update' object.id %}">Update</a>
-            <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'code-delete' object.id %}">Delete</a>
-          </div>
-        {% endif %}
       </div>
-      <h2 class="article-title">{{ object.title }}</h2>
-      <p class="article-content">{{ object.content }}</p>
+      <br>
+      <br>
+      <p class="article-title" style="border-style: solid; border-color: black;border-radius: 10px; background-color: black;font-size: x-large; width: fit-content;">&nbsp&nbsp <b>Title : &nbsp&nbsp&nbsp&nbsp&nbsp{{ object.title }}&nbsp&nbsp&nbsp&nbsp</b></p>
+      <br><p class="article-content"><h4>Code :</h4>
+        <div style="border-style: solid; background-color: white; border-width: 1px; font-size: x-large;">
+          <pre>{{content}}</pre>
+          <!-- {% for line in content %}
+          <pre>{{line}}</pre>
+          {% endfor %} -->
+        </div>
+      </p>
+      <br>
       <form method="POST" action="/code/codes/output">
         {% csrf_token %}
         <textarea name="userin" placeholder="Type your input here.."></textarea></br>
-        <input type="submit" value="Run Code"/>
+        <br>
+        <input type="submit" value="Run Code" class="btn btn-secondary btn-sm mt-1 mb-1"/>
       </form>
     </div>
+    {% if object.author == user %}
+    <div>
+      <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'code-update' object.id %}">Update Code</a>
+      <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'code-delete' object.id %}">Delete Code</a>
+    </div>
+    {% endif %}
   </article>
 {% endblock content %}
