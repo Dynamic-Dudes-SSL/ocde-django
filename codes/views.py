@@ -11,12 +11,30 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from subprocess import PIPE
 import subprocess
 import os
+global_content=""
+global_lang=""
+global_title=""
+global_user_input=""
+
 
 def home(request):
     context = {
         'codes': Code.objects.all()
     }
     return render(request, 'codes/home.html', context)
+
+def output(request):
+    global global_user_input
+    global_user_input = request.POST['userin']
+    print_output = get_output()
+    con={
+        'global_user_input' : global_user_input ,
+        'global_content' : global_content ,
+        'global_lang' : global_lang ,
+        'global_title' : global_title ,
+        'print_output' : print_output
+    }
+    return render(request,'codes/output.html',con)
 
 def class_name(content):
     words2 = content.split('{')
@@ -26,24 +44,34 @@ def class_name(content):
         name = name[0:-2]
     return name
 
-def get_output(code_written):
-    code = code_written.content 
-    lang = code_written.lang
-    title = code_written.title
-    output="abc"
+def get_output():
+    # code = code_written.content 
+    # lang = code_written.lang
+    # title = code_written.title
+    code=global_content
+    lang=global_lang
+    title=global_lang
+    output=""
     cmd2=""
+    f6=open("in.txt","w")
+    f6.write(global_user_input)
+    f6.close()
     if lang == "PYTHON":
         if len(code)>0:
             f2 = open("pyt.py", "w")
             f2.write(code)
             f2.close()
-            cmd = "pyt.py"
-            p2=subprocess.run(["python3", cmd], stdout=PIPE, stderr=PIPE)
-            if p2.returncode==0:
-                output=p2.stdout.decode()
-            else:
-                output="error"
-                os.remove("pyt.py")
+            
+            os.system("echo kurama | sudo -S ls")
+            os.system("sudo docker create --name OCDE -t --net=host -v \"$HOME\" -e DISPLAY=\"$DISPLAY\" --volume=\"$HOME/.Xauthority:/root/.Xauthority:rw\" --cap-add=SYS_PTRACE --security-opt seccomp=unconfined cs251aut2021")
+            os.system("sudo docker start OCDE")
+            os.system("sudo docker cp ./pyt.py OCDE:/home")
+            os.system("sudo docker cp ./in.txt OCDE:/home")
+            output = subprocess.check_output("(echo \"python3 pyt.py < in.txt; exit 0 \") | sudo docker exec -i OCDE /bin/bash", shell=True).decode('utf-8')
+            os.system("echo kurama | sudo -S docker stop OCDE")
+            os.system("echo kurama | sudo -S docker container rm OCDE")
+            # output = subprocess.check_output("python3 pyt.py < in.txt; exit 0", shell=True).decode('utf-8')
+            os.remove("pyt.py")
 
     elif lang == 'C++':
         if len(code)>0:
@@ -53,35 +81,47 @@ def get_output(code_written):
             cmd = "cpy.cpp"
             p1=subprocess.run(["g++", cmd])
             if p1.returncode==0:
-                p1=subprocess.run("./a.out", stdout=PIPE, stderr=PIPE)
-                if p1.returncode==0:
-                    output=p1.stdout.decode()
-                else:
-                    output="runtime error"
+                # output = subprocess.check_output("./a.out < in.txt", shell=True).decode('utf-8')
+                # os.remove("./a.out")
+                os.system("echo kurama | sudo -S ls")
+                os.system("sudo docker create --name OCDE -t --net=host -v \"$HOME\" -e DISPLAY=\"$DISPLAY\" --volume=\"$HOME/.Xauthority:/root/.Xauthority:rw\" --cap-add=SYS_PTRACE --security-opt seccomp=unconfined cs251aut2021")
+                os.system("sudo docker start OCDE")
+                os.system("sudo docker cp ./a.out OCDE:/home")
+                os.system("sudo docker cp ./in.txt OCDE:/home")
+                output = subprocess.check_output("(echo \"./a.out < in.txt; exit 0 \") | sudo docker exec -i OCDE /bin/bash", shell=True).decode('utf-8')
+                os.system("echo kurama | sudo -S docker stop OCDE")
+                os.system("echo kurama | sudo -S docker container rm OCDE")
+                os.remove("./a.out")
             else:
                 output="compilation error"
             os.remove("cpy.cpp")
-            os.remove("./a.out")
-
+            
+    
     elif lang == 'JAVA':
         if len(code)>0:
-            cmd2=class_name(code)
-            cmd =cmd2+ ".java"
-            f3 = open(cmd, "w")
+            class_name = global_title
+            source = class_name + ".java"
+            f3 = open(source , "w")
             f3.write(code)
             f3.close()
-            p3=subprocess.run(["javac", cmd])
+            p3 = subprocess.run(["javac", source])
             if p3.returncode==0:
-                p3=subprocess.run(["java",cmd2], stdout=PIPE, stderr=PIPE)
-                if p3.returncode==0:
-                    output=p3.stdout.decode()
-                else:
-                    output="runtime error"
+                # output=subprocess.check_output("java \"+ source + \"; exit 0", shell=True).decode('utf-8')
+                os.system("echo kurama | sudo -S ls")
+                os.system("sudo docker create --name OCDE -t --net=host -v \"$HOME\" -e DISPLAY=\"$DISPLAY\" --volume=\"$HOME/.Xauthority:/root/.Xauthority:rw\" --cap-add=SYS_PTRACE --security-opt seccomp=unconfined cs251aut2021")
+                os.system("sudo docker start OCDE")
+                os.system("sudo docker cp ./" + class_name + ".class OCDE:/home")
+                os.system("sudo docker cp ./in.txt OCDE:/home")
+                output = subprocess.check_output("(echo \"java " + class_name + " < in.txt; exit 0 \") | sudo docker exec -i OCDE /bin/bash", shell=True).decode('utf-8')
+                os.system("echo kurama | sudo -S docker stop OCDE")
+                os.system("echo kurama | sudo -S docker container rm OCDE")
+                os.system("rm *.class")
             else:
                 output="compilation error"
-            os.remove(cmd)
-            #os.remove(cmd2+".class")
-            
+            os.remove(source)
+    os.remove("in.txt")
+    output = output.replace("\n","<br>")
+    output = output.split("<br>")
     return output
 
 def submissions(user):
@@ -113,10 +153,17 @@ class CodeDetailView(DetailView):
     model = Code
 
     def get_context_data(self, **kwargs):
+        global global_title
+        global global_lang
+        global global_content
         context = super().get_context_data(**kwargs)
-        context['output'] = get_output(self.get_object())
+        global_title=self.get_object().title
+        global_lang=self.get_object().lang
+        global_content=self.get_object().content
+        #context['output'] = get_output(self.get_object())
         return context
 
+        
 class CodeCreateView(LoginRequiredMixin, CreateView):
     model = Code
     fields = ['lang', 'title', 'content']

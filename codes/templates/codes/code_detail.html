@@ -15,8 +15,11 @@
       </div>
       <h2 class="article-title">{{ object.title }}</h2>
       <p class="article-content">{{ object.content }}</p>
-      <h3>Output</h3>
-      <p>{{ output }}</p>
+      <form method="POST" action="/code/codes/output">
+        {% csrf_token %}
+        <textarea name="userin" placeholder="Type your input here.."></textarea></br>
+        <input type="submit" value="Run Code"/>
+      </form>
     </div>
   </article>
 {% endblock content %}
